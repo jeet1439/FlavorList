@@ -1,0 +1,23 @@
+{
+  "name": "flavorlist",
+  "version": "1.0.0",
+  "description": "A simple and user-friendly web app that provides a list of food items, helping us hotel owners organize their favorite dishes. Built with a clean UI and easy navigation for a smooth browsing experience",
+  "main": "backend/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon backend/server.js"
+  },
+  "keywords": [],
+  "author": "jeet_banik",
+  "type": "module",
+  "license": "ISC",
+  "dependencies": {
+    "@arcjet/node": "^1.0.0-beta.4",
+    "@neondatabase/serverless": "^0.10.4",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "helmet": "^8.1.0",
+    "morgan": "^1.10.0"
+  }
+}
