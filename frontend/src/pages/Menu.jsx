@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useProductStore } from "../store/useProductStore";
 import { Link } from "react-router-dom";
-export default function AllItem() {
+export default function Menu() {
   const { products, loading, error, fetchProducts } = useProductStore();
 
   useEffect(() => {
@@ -9,13 +9,14 @@ export default function AllItem() {
   }, [fetchProducts]);
   
   
-  if (loading) return <p className="text-center text-yellow-500 justify-center">Loading...</p>;
+  if (loading) return <p className="text-center pt-20 text-yellow-500 justify-center bg-slate-950 items-center min-h-screen">Loading...</p>;
 
   return (
-    <div className="bg-slate-950 min-h-screen sm:p-14 px-2 justify-center">
+    <div className="bg-slate-950 min-h-screen sm:p-14 px-2 justify-center pt-20">
       { error ? (<div className="bg-red-600 text-stone-100 text-center mx-auto w-64 rounded-sm py-2">{error}</div>) : ('') }
-      <div className="flex flex-row justify-between items-center h-16 mb-7">
+      <div className="flex flex-row justify-between items-center h-16 mb-7 mt-4 ">
         <h1 className="sm:text-4xl text-xl text-yellow-400 font-serif">Available Items</h1>
+        
         <button className="sm:px-4 sm:py-2 px-2 py-1 bg-yellow-500 text-white hover:bg-yellow-600">
           + Add Item
         </button>

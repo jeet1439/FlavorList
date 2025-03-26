@@ -2,19 +2,22 @@ import React, { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar.jsx';
 
-// Lazily load the pages
 const Homepage = lazy(() => import('./pages/Homepage.jsx'));
-const AllItem = lazy(() => import('./pages/AllItem.jsx'));
+const Menu = lazy(() => import('./pages/Menu.jsx'));
 const Item = lazy(() => import('./pages/Item.jsx'));
+const Login = lazy(() => import('./pages/login.jsx'));
+const Signup = lazy(() => import('./pages/Signup.jsx'));
 export default function App() {
   return (
     <BrowserRouter>
-      <Suspense fallback={<div className='min-h-screen flex justify-center items-center'>Loading...</div>}>
+      <Suspense fallback={<div className='text-stone-50 min-h-screen flex justify-center items-center pt-20 bg-slate-950'>Loading...</div>}>
       <Navbar/>
         <Routes>
           <Route path='/' element={<Homepage />} />
-          <Route path='/allItems' element={<AllItem />}/>
+          <Route path='/menu' element={<Menu />}/>
           <Route path='/product/:id' element={<Item />} />
+          <Route path='/login' element={<Login/>}/>
+          <Route path='/signup' element={<Signup/>}/>
         </Routes>
       </Suspense>
     </BrowserRouter>

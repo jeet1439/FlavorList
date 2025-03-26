@@ -9,7 +9,7 @@ export default function Item() {
   useEffect(() => {
     const fetchItem = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/products/${id}`);
+        const response = await fetch(`/api/products/${id}`);
         if (!response.ok) {
           throw new Error(`Error fetching product: ${response.statusText}`);
         }
@@ -24,11 +24,11 @@ export default function Item() {
     fetchItem();
   }, [id]);
 
-  if (error) return <div className="text-center text-red-500 font-semibold">{error}</div>;
-  if (!item) return <div className="text-center text-yellow-500 font-semibold">Loading...</div>;
+  if (error) return <div className="text-center text-red-500 pt-20 font-semibold min-h-screen bg-slate-950">{error}</div>;
+  if (!item) return <div className="text-center text-yellow-500 pt-20 font-semibold  min-h-screen bg-slate-950">Loading...</div>;
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-black p-6">
+    <div className="flex items-center justify-center min-h-screen bg-black p-6 pt-20">
       <div className="flex flex-col md:flex-row items-center max-w-6xl h-full text-white">
         
         {/* Image Section (Fixed Square, Cover Mode) */}
