@@ -47,8 +47,8 @@ export default function Login() {
     <>
       <div className="min-h-screen flex items-center justify-center bg-slate-950 px-4 pt-20">
         <div className="w-full max-w-md bg-slate-900 p-6 rounded-lg shadow-lg">
-          <h2 className="text-2xl font-semibold text-center text-orange-500">Login to FoodieHub</h2>
-          <p className="text-sm text-center text-gray-400 mb-4">Enjoy delicious meals at your doorstep!</p>
+          <h2 className="text-2xl font-semibold text-center text-orange-500 mb-1">Login to FoodieHub</h2>
+          <p className="text-sm text-center text-gray-400 mb-4">Enjoy delicious meals at your Table!</p>
 
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
@@ -57,7 +57,7 @@ export default function Login() {
                 type="email"
                 id="email"
                 placeholder="example@gmail.com"
-                className="w-full px-3 py-2 rounded bg-gray-700 text-white focus:outline-none"
+                className="w-full px-3 py-2 rounded bg-slate-700 text-white focus:outline-none"
                 onChange={handleChange}
               />
             </div>

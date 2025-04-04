@@ -1,5 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import Navbar from './components/Navbar.jsx';
 
 const Homepage = lazy(() => import('./pages/Homepage.jsx'));
@@ -19,6 +20,7 @@ export default function App() {
           <Route path='/login' element={<Login/>}/>
           <Route path='/signup' element={<Signup/>}/>
         </Routes>
+        <Toaster />
       </Suspense>
     </BrowserRouter>
   );

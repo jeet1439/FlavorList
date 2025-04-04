@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useProductStore } from "../store/useProductStore.js";
 
 export default function Item() {
+  const deleteProduct = useProductStore((state) => state.deleteProduct);
   const { id } = useParams();
   const [item, setItem] = useState(null);
   const [error, setError] = useState(null);
@@ -52,6 +54,7 @@ export default function Item() {
 
           {/* Order Button */}
         <button className="mt-6 bg-yellow-500 text-white font-semibold text-lg py-2 px-6 rounded-sm  hover:bg-yellow-600 transition w-36">Order Now</button>
+        <button onClick={() => deleteProduct(item.id)}>Delete</button>
         </div>
       </div>
     </div>

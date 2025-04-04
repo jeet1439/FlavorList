@@ -20,6 +20,7 @@ export default function Navbar() {
 
         <ul className="hidden md:flex space-x-6 text-gray-300 font-medium">
           <li><a href="/login" className="hover:underline">Login</a></li>
+          <li><a href="/signup" className="hover:underline">Signup</a></li>
           <li><a href="/orders" className="hover:underline"><Utensils size={24} color="white"/></a></li>
         </ul>
       </div>
