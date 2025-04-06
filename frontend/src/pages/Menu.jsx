@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useProductStore } from "../store/useProductStore";
 import { Link } from "react-router-dom";
+import { PackageIcon } from "lucide-react";
 
 export default function Menu() {
   const { products, loading, error, fetchProducts, addProduct } = useProductStore();
@@ -52,10 +53,28 @@ export default function Menu() {
           {error}
         </div>
       )}
+      {
+        products.length === 0 && !loading &&(
+          <div className="flex flex-col justify-center items-center h-96 space-y-1">
+            <div className="rounded-full p-6 text-gray-200">
+              <PackageIcon className="size-12"/>
+            </div>
+            <div className="text-center space-y-2">
+            <h3 className="text-2xl font-semibold  text-gray-200">No products found</h3>
+            <p className="text-gray-500 max-w-sm">
+              Get started by Listing yout first item
+            </p>
+            </div>
+          </div>
+        )
+      }
 
       <div className="flex flex-row justify-between items-center h-16 mb-7 mt-4 ">
-        <h1 className="sm:text-4xl text-xl text-yellow-400 font-serif">Available Items</h1>
-
+        {
+          products.length > 0 && (
+            <h1 className="sm:text-4xl text-xl text-yellow-400 font-serif">Available Items</h1>
+          )
+        }
         {/* Open Form Button */}
         <button
           onClick={() => setShowForm(true)}
@@ -64,6 +83,7 @@ export default function Menu() {
           + Add Item
         </button>
       </div>
+
 
       {/* Add Product Form (Popup) */}
       {showForm && (
@@ -140,9 +160,9 @@ export default function Menu() {
                 <div className="absolute bottom-0 left-0 bg-gradient-to-r from-black via-black/80 to-transparent px-3 py-2 text-white text-lg font-semibold w-full">
                   {product.name}
                 </div>
-                <button className="absolute top-0 right-0 text-white px-3 py-1 rounded-bl-md">
+                {/* <button className="absolute top-0 right-0 text-white px-3 py-1 rounded-bl-md">
                   &#10006;
-                </button>
+                </button> update the delete button here*/}
               </div>
             </Link>
             <div className="flex justify-between items-center font-serif">

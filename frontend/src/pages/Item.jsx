@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useProductStore } from "../store/useProductStore.js";
+import { Trash2, UtensilsCrossed } from "lucide-react";
 
 export default function Item() {
   const deleteProduct = useProductStore((state) => state.deleteProduct);
@@ -53,8 +54,9 @@ export default function Item() {
           </p>
 
           {/* Order Button */}
-        <button className="mt-6 bg-yellow-500 text-white font-semibold text-lg py-2 px-6 rounded-sm  hover:bg-yellow-600 transition w-36">Order Now</button>
-        <button onClick={() => deleteProduct(item.id)}>Delete</button>
+        <button className="mt-6 bg-yellow-500 text-white font-semibold text-lg py-2 px-6 rounded-sm flex hover:bg-yellow-600 transition w-36 gap-3"><UtensilsCrossed size={24}/> Order</button>
+        <button className="mt-6" onClick={() => deleteProduct(item.id)}><Trash2 size={24} strokeWidth={1.5} className="text-gray-400 hover:text-red-500" />
+</button>
         </div>
       </div>
     </div>
