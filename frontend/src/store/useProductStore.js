@@ -29,6 +29,7 @@ export const useProductStore = create((set, get) => ({
         await get().fetchProducts();
         get().resetForm();
         toast.success("Product added successfully");
+        document.getElementById("add_product_modal").close();
       } catch (error) {
         console.log(error);
         toast.success("Something went wrong");
@@ -36,6 +37,8 @@ export const useProductStore = create((set, get) => ({
         set({ loading: false });
       }
     },
+
+
     fetchProducts: async () => {
         set({ loading: true });
         try {

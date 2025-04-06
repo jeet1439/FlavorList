@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useProductStore } from "../store/useProductStore";
 import { Link } from "react-router-dom";
 import { PackageIcon } from "lucide-react";
+import AddProductModal from "../components/AddProductModal.jsx";
 
 export default function Menu() {
   const { products, loading, error, fetchProducts, addProduct } = useProductStore();
@@ -77,16 +78,16 @@ export default function Menu() {
         }
         {/* Open Form Button */}
         <button
-          onClick={() => setShowForm(true)}
+          onClick={() => document.getElementById("add_product_modal").showModal()}
           className="sm:px-4 sm:py-2 px-2 py-1 bg-yellow-500 text-white hover:bg-yellow-600"
         >
           + Add Item
         </button>
       </div>
-
+      <AddProductModal/>
 
       {/* Add Product Form (Popup) */}
-      {showForm && (
+      {/* {showForm && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50">
           <div className="bg-slate-900 p-6 rounded-lg shadow-lg w-[450px] max-w-xl mx-3 text-stone-100">
             <h2 className="text-xl font-semibold mb-4 text-center">Add New Product</h2>
@@ -136,6 +137,7 @@ export default function Menu() {
                   Cancel
                 </button>
                 <button
+                  
                   type="submit"
                   className="bg-yellow-500 px-4 py-2 text-white rounded hover:bg-yellow-600"
                 >
@@ -145,7 +147,7 @@ export default function Menu() {
             </form>
           </div>
         </div>
-      )}
+      )} */}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         {products.map((product) => (
