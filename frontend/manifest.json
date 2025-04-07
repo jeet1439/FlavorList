@@ -1,0 +1,35 @@
+{
+    "name": "FlavorList",
+    "short_name": "FlavorList",
+    "start_url": "/login",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#FFEB3B",
+    "icons": [
+      {
+        "src": "https://cdn0.iconfinder.com/data/icons/apple-apps/100/Apple_Photos-1024.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "/https://cdn0.iconfinder.com/data/icons/apple-apps/100/Apple_Photos-1024.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ],
+    "screenshots": [
+    {
+      "src": "src/assets/mobile_screenshot.png",
+      "type": "image/png",
+      "sizes": "360x720",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "src/assets/pc_screenshot.png",
+      "type": "image/png",
+      "sizes": "1280x720",
+      "form_factor": "wide"
+    }
+  ]
+  }
+  
