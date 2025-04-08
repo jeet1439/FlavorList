@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
+import axios from "axios";
 
 export default function Signup() {
   const [formData, setFormData] = useState({ name: "", email: "", password: "" });
   const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState(null);
-  const [successMsg, setSuccessMsg] = useState(null);
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -15,33 +16,23 @@ export default function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.password) {
-      setErrorMsg("All fields are required!");
-      setTimeout(() => setErrorMsg(null), 3000);
+      toast.error("All fields are required!");
       return;
     }
     try {
       setLoading(true);
-      setErrorMsg(null);
-      const res = await fetch("/api/v1/users/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setErrorMsg(data.message);
-        setTimeout(() => setErrorMsg(null), 3000);
-      } else {
-        setSuccessMsg("Signup successful! Redirecting to login...");
-        setTimeout(() => navigate("/login"), 2000);
-      }
-      setLoading(false);
+      const res = await axios.post("/api/auth/signup", formData);
+      toast.success("Signup successful! Redirecting to login...");
+      setTimeout(() => navigate("/login"), 2000);
+      
     } catch (error) {
-      setErrorMsg("Something went wrong. Try again.");
-      setTimeout(() => setErrorMsg(null), 3000);
+      console.error(error);
+      toast.error(error.response?.data?.message || "Something went wrong. Try again.");
+    } finally {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-950 px-4 pt-20">
@@ -91,9 +82,6 @@ export default function Signup() {
             {loading ? "Signing up..." : "Sign Up"}
           </button>
         </form>
-
-        {errorMsg && <p className="mt-3 text-red-500 text-sm text-center">{errorMsg}</p>}
-        {successMsg && <p className="mt-3 text-green-500 text-sm text-center">{successMsg}</p>}
 
         <p className="text-sm text-gray-400 mt-4 text-center">
           Already have an account? {" "}

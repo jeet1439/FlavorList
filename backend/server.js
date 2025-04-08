@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import productRoutes from "./routes/productRoutes.js"
-
+import authRoutes from './routes/authRoutes.js';
 
 import { sql } from "./config/db.js";
 import { aj } from "./lib/arcjet.js";
@@ -42,7 +42,11 @@ app.use(async (req, res, next) => {
         next(error);
     }
 })
+
+
 app.use("/api/products" , productRoutes);
+app.use('/api/auth', authRoutes);
+
 
 app.get("/test", (req, res) =>{
     res.send("hello from tets rote")
@@ -55,7 +59,7 @@ async function initDB() {
             id SERIAL PRIMARY KEY,
             name VARCHAR(255) NOT NULL,
             email VARCHAR(255) UNIQUE NOT NULL,
-            password TEXT NOT NULL,
+            password TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );`;
 
