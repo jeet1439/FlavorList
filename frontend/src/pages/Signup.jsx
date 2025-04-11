@@ -24,7 +24,7 @@ export default function Signup() {
       const res = await axios.post("/api/auth/signup", formData);
       toast.success("Signup successful! Redirecting to login...");
       setTimeout(() => navigate("/login"), 2000);
-      
+       
     } catch (error) {
       console.error(error);
       toast.error(error.response?.data?.message || "Something went wrong. Try again.");

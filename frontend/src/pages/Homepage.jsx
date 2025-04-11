@@ -1,8 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import backgroundImage from '../assets/background.jpg';
+import  useUserStore  from '../store/userStore.js';
 
 export default function Homepage() {
+
+  const currentUser = useUserStore((state) => state.currentUser);
+
+
   return (
     <div
       className="h-screen w-full bg-cover bg-center flex flex-col items-center justify-center text-white"
@@ -15,6 +20,7 @@ export default function Homepage() {
           View All Items
         </button>
       </Link>
+       <p>welcome, {currentUser?.name}!</p>
       <p className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-stone-800 text-sm">
      © {new Date().getFullYear()} FoodieHub. All rights reserved. Made by Jeet banik
     </p>

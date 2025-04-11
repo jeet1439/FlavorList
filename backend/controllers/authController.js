@@ -1,7 +1,10 @@
 import bcrypt from 'bcrypt';
 import { sql } from '../config/db.js';
 
-const signup = async (req, res) => {
+import jwt from 'jsonwebtoken';
+const JWT_SECRET = 'superseckk'; 
+
+export const signup = async (req, res) => {
     const { name, email, password } = req.body;
 
     try {
@@ -27,4 +30,46 @@ const signup = async (req, res) => {
     }
 };
 
-export default signup;
+
+export const login = async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const result = await sql`SELECT * FROM users WHERE email = ${email}`;
+        const user = result[0];
+
+        if (!user) {
+            return res.status(401).json({ message: 'Invalid email or password' });
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({ message: 'Invalid email or password' });
+        }
+
+        // Generate JWT token
+        const token = jwt.sign(
+            { id: user.id, email: user.email },
+            JWT_SECRET,
+            { expiresIn: '1h' }
+        );
+
+        const { password: _, ...safeUser } = user;
+
+        // ✅ Send only one response
+        return res.cookie('access_token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: 60 * 60 * 1000,
+        }).status(200).json({
+            message: 'Login successful',
+            user: safeUser,
+            token, // optionally include token here
+        });
+
+    } catch (err) {
+        console.error('Login error:', err);
+        return res.status(500).json({ message: 'Server error' });
+    }
+};

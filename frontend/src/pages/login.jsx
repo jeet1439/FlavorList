@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
+import axios from "axios";
+
+import useUserStore from "../store/userStore.js";
+
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState(null);
-  const [successMsg, setSuccessMsg] = useState(null);
+  const { setCurrentUser } = useUserStore();
+  
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -15,30 +20,20 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.email || !formData.password) {
-      setErrorMsg("All fields are required!");
-      setTimeout(() => setErrorMsg(null), 3000); // Remove error after 3 seconds
+      toast.error("All fields are required!");
       return;
     }
     try {
       setLoading(true);
-      setErrorMsg(null);
-      const res = await fetch("/api/v1/users/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setErrorMsg(data.message);
-        setTimeout(() => setErrorMsg(null), 3000); // Remove error after 3 seconds
-      } else {
-        setSuccessMsg("Login successful!");
-        setTimeout(() => navigate("/"), 2000);
-      }
-      setLoading(false);
+      const res = await axios.post("/api/auth/login", formData);
+      console.log(res.data.user);
+      setCurrentUser(res.data.user);
+      toast.success("Login successful!, Navigating to menu ...");  
+      setTimeout(() => navigate("/menu"), 2000);
     } catch (error) {
-      setErrorMsg("Something went wrong. Try again.");
-      setTimeout(() => setErrorMsg(null), 3000); // Remove error after 3 seconds
+      const msg = error.response?.data?.message || "Something went wrong. Try again.";
+      toast.error(msg);
+    } finally {
       setLoading(false);
     }
   };
@@ -81,10 +76,6 @@ export default function Login() {
               {loading ? "Logging in..." : "Login"}
             </button>
           </form>
-
-          {errorMsg && <p className="mt-3 text-red-500 text-sm text-center">{errorMsg}</p>}
-          {successMsg && <p className="mt-3 text-green-500 text-sm text-center">{successMsg}</p>}
-
           <p className="text-sm text-gray-400 mt-4 text-center">
             Don't have an account?{" "}
             <a href="/signup" className="text-orange-500 hover:underline">

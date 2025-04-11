@@ -41,7 +41,7 @@ app.use(async (req, res, next) => {
         console.log("Arcject error", error);
         next(error);
     }
-})
+}) 
 
 
 app.use("/api/products" , productRoutes);
@@ -60,6 +60,7 @@ async function initDB() {
             name VARCHAR(255) NOT NULL,
             email VARCHAR(255) UNIQUE NOT NULL,
             password TEXT,
+            is_admin BOOLEAN DEFAULT FALSE,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );`;
 
