@@ -3,9 +3,11 @@ import { useProductStore } from "../store/useProductStore";
 import { Link } from "react-router-dom";
 import { PackageIcon } from "lucide-react";
 import AddProductModal from "../components/AddProductModal.jsx";
+import  useUserStore  from '../store/userStore.js';
 
 export default function Menu() {
   const { products, loading, error, fetchProducts, addProduct } = useProductStore();
+  const currentUser = useUserStore((state) => state.currentUser);
 
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
@@ -77,77 +79,19 @@ export default function Menu() {
           )
         }
         {/* Open Form Button */}
-        <button
+        {currentUser?.is_admin ? (
+          <button
           onClick={() => document.getElementById("add_product_modal").showModal()}
           className="sm:px-4 sm:py-2 px-2 py-1 bg-yellow-500 text-white hover:bg-yellow-600"
         >
           + Add Item
         </button>
+        ) : (
+          ''
+        )}
+        
       </div>
       <AddProductModal/>
-
-      {/* Add Product Form (Popup) */}
-      {/* {showForm && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50">
-          <div className="bg-slate-900 p-6 rounded-lg shadow-lg w-[450px] max-w-xl mx-3 text-stone-100">
-            <h2 className="text-xl font-semibold mb-4 text-center">Add New Product</h2>
-            <form onSubmit={handleSubmit} className="flex flex-col space-y-3">
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                placeholder="Product Name"
-                required
-                className="w-full px-3 py-2 rounded bg-slate-700 text-stone-50 focus:outline-none"
-              />
-              <input
-                type="text"
-                name="image"
-                value={formData.image}
-                onChange={handleChange}
-                placeholder="Image URL"
-                required
-                className="w-full px-3 py-2 rounded bg-slate-700 text-stone-50  focus:outline-none"
-              />
-              <input
-                type="number"
-                name="price"
-                value={formData.price}
-                onChange={handleChange}
-                placeholder="Price"
-                required
-                className="w-full px-3 py-2 rounded bg-slate-700 text-stone-50  focus:outline-none"
-              />
-              <label className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  name="available"
-                  checked={formData.available}
-                  onChange={handleChange}
-                />
-                <span>Available</span>
-              </label>
-              <div className="flex justify-between">
-                <button
-                  type="button"
-                  onClick={() => setShowForm(false)}
-                  className="bg-gray-400 px-4 py-2 text-white rounded"
-                >
-                  Cancel
-                </button>
-                <button
-                  
-                  type="submit"
-                  className="bg-yellow-500 px-4 py-2 text-white rounded hover:bg-yellow-600"
-                >
-                  Add Product
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )} */}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         {products.map((product) => (

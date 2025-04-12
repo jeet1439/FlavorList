@@ -10,7 +10,7 @@ const useUserStore = create(
       logoutUser: () => set({ currentUser: null }),
     }),
     {
-      name: "user-storage", // key used in localStorage
+      name: "user-storage", 
     }
   )
 );
