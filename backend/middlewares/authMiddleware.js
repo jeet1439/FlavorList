@@ -1,21 +1,24 @@
 import jwt from 'jsonwebtoken';
+const JWT_SECRET = 'superseckk'; 
 
-export const isLoggedIn = (req, res, next) => {
+// debug
+
+export const verifyToken = (req, res, next) =>{
     const token = req.cookies.access_token;
-
-    if (!token) {
-        return res.status(401).json({ message: 'Unauthorized: No token provided' });
+    if(!token){
+       return ;
     }
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded;
+    jwt.verify(token , JWT_SECRET , (err, user) => {
+        if(err){
+            return ;
+        }
+        req.user = user;
         next();
-    } catch (err) {
-        return res.status(401).json({ message: 'Unauthorized: Invalid token' });
-    }
+    });
 };
 
 export const isAdmin = (req, res, next) => {
+
     if (req.user && req.user.is_admin) { 
         next();
     } else {

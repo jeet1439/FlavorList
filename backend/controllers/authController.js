@@ -37,7 +37,7 @@ export const login = async (req, res) => {
     try {
         const result = await sql`SELECT * FROM users WHERE email = ${email}`;
         const user = result[0];
-
+        
         if (!user) {
             return res.status(401).json({ message: 'Invalid email or password' });
         }
@@ -55,8 +55,7 @@ export const login = async (req, res) => {
         );
 
         const { password: _, ...safeUser } = user;
-
-        // ✅ Send only one response
+        
         return res.cookie('access_token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
@@ -65,11 +64,21 @@ export const login = async (req, res) => {
         }).status(200).json({
             message: 'Login successful',
             user: safeUser,
-            token, // optionally include token here
+            token, 
         });
-
+    
     } catch (err) {
         console.error('Login error:', err);
         return res.status(500).json({ message: 'Server error' });
     }
+};
+
+export const logout = (req, res) => {
+    res.clearCookie('access_token', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+    });
+
+    return res.status(200).json({ message: 'Logout successful' });
 };

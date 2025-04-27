@@ -9,14 +9,7 @@ export default function Menu() {
   const { products, loading, error, fetchProducts, addProduct } = useProductStore();
   const currentUser = useUserStore((state) => state.currentUser);
 
-  const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    image: "",
-    price: "",
-    available: true
-  });
-
+  
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
@@ -29,25 +22,7 @@ export default function Menu() {
     );
 
   // Handle Input Change
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === "checkbox" ? checked : value
-    });
-  };
-
-  // Handle Form Submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    addProduct({
-      id: Date.now(), // Temporary ID (Replace with backend-generated ID)
-      ...formData,
-      price: parseFloat(formData.price),
-    });
-    setShowForm(false);
-    setFormData({ name: "", image: "", price: "", available: true });
-  };
+  
 
   return (
     <div className="bg-slate-950 min-h-screen sm:p-14 px-2 justify-center pt-20">

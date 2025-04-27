@@ -2,12 +2,18 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useProductStore } from "../store/useProductStore.js";
 import { Trash2, UtensilsCrossed } from "lucide-react";
+import  useUserStore  from '../store/userStore.js';
+
 
 export default function Item() {
   const deleteProduct = useProductStore((state) => state.deleteProduct);
   const { id } = useParams();
   const [item, setItem] = useState(null);
   const [error, setError] = useState(null);
+ 
+
+  const currentUser = useUserStore((state) => state.currentUser);
+
 
   useEffect(() => {
     const fetchItem = async () => {
@@ -55,8 +61,14 @@ export default function Item() {
 
           {/* Order Button */}
         <button className="mt-6 bg-yellow-500 text-white font-semibold text-lg py-2 px-6 rounded-sm flex hover:bg-yellow-600 transition w-36 gap-3"><UtensilsCrossed size={24}/> Order</button>
-        <button className="mt-6" onClick={() => deleteProduct(item.id)}><Trash2 size={24} strokeWidth={1.5} className="text-gray-400 hover:text-red-500" />
-</button>
+        {
+          currentUser?.is_admin ? ( 
+            <button className="mt-6" onClick={() => deleteProduct(item.id)}><Trash2 size={24} strokeWidth={1.5} className="text-gray-400 hover:text-red-500" />
+       </button>
+           ) : 
+           ('')
+        }
+      
         </div>
       </div>
     </div>

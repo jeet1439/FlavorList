@@ -4,6 +4,13 @@ import { DollarSignIcon, ImageIcon, Package2Icon, PlusCircleIcon } from 'lucide-
 
 export default function AddProductModal() {
   const { addProduct, formData, setFormData, loading } = useProductStore();
+ 
+  // Handle Form Submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await addProduct();
+  };
+
 
   return (
     <dialog id='add_product_modal' className='modal'>
@@ -20,7 +27,7 @@ export default function AddProductModal() {
 
         {/* Main form */}
         <form
-          onSubmit={addProduct}
+           onSubmit={handleSubmit} 
           className='space-y-6'
         >
           <div className='grid gap-4'>
@@ -110,7 +117,7 @@ export default function AddProductModal() {
               {loading ? (
                 <span className='loading loading-spinner loading-sm' />
               ) : (
-                <>
+                <> 
                   <PlusCircleIcon className='w-5 h-5 mr-2' />
                   Add Product
                 </>

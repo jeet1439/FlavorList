@@ -3,6 +3,10 @@ import helmet from "helmet";
 import morgan from "morgan";
 import cors from 'cors';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
+
+ 
+
 dotenv.config();
 
 import productRoutes from "./routes/productRoutes.js"
@@ -12,8 +16,12 @@ import { sql } from "./config/db.js";
 import { aj } from "./lib/arcjet.js";
 
 const app = express();
+app.use(cookieParser());
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5173', // replace with your frontend URL
+    credentials: true,               
+  }));
 app.use(morgan("dev"));
 
 app.use(async (req, res, next) => {
