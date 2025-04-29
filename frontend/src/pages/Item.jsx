@@ -13,7 +13,10 @@ export default function Item() {
  
 
   const currentUser = useUserStore((state) => state.currentUser);
-
+  
+  const [showOrderForm, setShowOrderForm] = useState(false);
+  const [quantity, setQuantity] = useState(1);
+  // const [totalPrice, setTotalPrice] = useState(item.price);
 
   useEffect(() => {
     const fetchItem = async () => {
@@ -32,6 +35,24 @@ export default function Item() {
 
     fetchItem();
   }, [id]);
+  
+  const handleQuantityChange = (e) => {
+    const qty = parseInt(e.target.value);
+    setQuantity(qty);
+    setTotalPrice(qty * item.price);
+  };
+
+  const handleOrderSubmit = (e) => {
+    e.preventDefault();
+    // Submit order to backend here
+    console.log({
+      product_id: item.id,
+      quantity,
+      total_price: totalPrice
+    });
+    setShowOrderForm(false); // Close form after submission
+  };
+
 
   if (error) return <div className="text-center text-red-500 pt-20 font-semibold min-h-screen bg-slate-950">{error}</div>;
   if (!item) return <div className="text-center text-yellow-500 pt-20 font-semibold  min-h-screen bg-slate-950">Loading...</div>;
@@ -60,7 +81,9 @@ export default function Item() {
           </p>
 
           {/* Order Button */}
-        <button className="mt-6 bg-yellow-500 text-white font-semibold text-lg py-2 px-6 rounded-sm flex hover:bg-yellow-600 transition w-36 gap-3"><UtensilsCrossed size={24}/> Order</button>
+        <button className="mt-6 bg-yellow-500 text-white font-semibold text-lg py-2 px-6 rounded-sm flex hover:bg-yellow-600 transition w-36 gap-3" onClick={() => setShowOrderForm(true)}><UtensilsCrossed size={24}/> Order</button>
+
+
         {
           currentUser?.is_admin ? ( 
             <button className="mt-6" onClick={() => deleteProduct(item.id)}><Trash2 size={24} strokeWidth={1.5} className="text-gray-400 hover:text-red-500" />
@@ -71,6 +94,46 @@ export default function Item() {
       
         </div>
       </div>
+      {showOrderForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <form
+            onSubmit={handleOrderSubmit}
+            className="bg-slate-950 p-6 rounded-md shadow-md w-full max-w-md"
+          >
+            <h3 className="text-xl font-bold mb-4 text-gray-700">Place Order</h3>
+            
+            <label className="block mb-2 text-gray-700 font-medium">Quantity:</label>
+            <input
+              type="number"
+              min="1"
+              value={quantity}
+              onChange={handleQuantityChange}
+              className="border border-gray-300 px-3 py-2 rounded w-full mb-4"
+              required
+            />
+
+            <p className="text-lg font-medium text-gray-800 mb-4">
+              Total Price: <span className="text-teal-600">₹ 20</span>
+            </p>
+
+            <div className="flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setShowOrderForm(false)}
+                className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+              >
+                Confirm Order
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
     </div>
   );
 }

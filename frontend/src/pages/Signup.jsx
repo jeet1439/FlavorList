@@ -19,7 +19,7 @@ export default function Signup() {
       toast.error("All fields are required!");
       return;
     }
-    try {
+    try { 
       setLoading(true);
       const res = await axios.post("/api/auth/signup", formData);
       toast.success("Signup successful! Redirecting to login...");
