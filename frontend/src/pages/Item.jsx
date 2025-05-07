@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useProductStore } from "../store/useProductStore.js";
 import { Trash2, UtensilsCrossed } from "lucide-react";
 import  useUserStore  from '../store/userStore.js';
-
+import { toast } from "react-hot-toast";
 
 export default function Item() {
   const deleteProduct = useProductStore((state) => state.deleteProduct);
@@ -46,16 +46,36 @@ export default function Item() {
     }
   };
 
-  const handleOrderSubmit = (e) => {
+  const handleOrderSubmit = async (e) => {
     e.preventDefault();
-    // Submit order to backend here
-    console.log({
-      product_id: item.id,
-      quantity,
-      total_price: totalPrice
-    });
-    setShowOrderForm(false); // Close form after submission
+    try {
+      const response = await fetch('/api/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: currentUser.id,
+          product_id: item.id,
+          quantity,
+          total_price: totalPrice,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to place order');
+      }
+  
+      const data = await response.json();
+      console.log(data.message); // "Order placed successfully"
+      toast.success("Order placed successfully!");
+      setShowOrderForm(false);
+    } catch (err) {
+      console.error(err.message);
+      toast.error("Error placing order");
+    }
   };
+  
 
 
   if (error) return <div className="text-center text-red-500 pt-20 font-semibold min-h-screen bg-slate-950">{error}</div>;

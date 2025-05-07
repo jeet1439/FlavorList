@@ -11,6 +11,7 @@ dotenv.config();
 
 import productRoutes from "./routes/productRoutes.js"
 import authRoutes from './routes/authRoutes.js';
+import orderRoutes from './routes/orderRoute.js';
 
 import { sql } from "./config/db.js";
 import { aj } from "./lib/arcjet.js";
@@ -54,7 +55,7 @@ app.use(async (req, res, next) => {
 
 app.use("/api/products" , productRoutes);
 app.use('/api/auth', authRoutes);
-
+app.use('/api/orders', orderRoutes);
 
 app.get("/test", (req, res) =>{
     res.send("hello from tets rote")

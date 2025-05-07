@@ -41,7 +41,9 @@ export const useProductStore = create((set, get) => ({
     fetchProducts: async () => {
         set({ loading: true });
         try {
-            const res = await axios.get(`${BASE_URL}/api/products`);
+            const res = await axios.get(`${BASE_URL}/api/products`, {
+              withCredentials: true, 
+            });
             set({ products: res.data.data, error: null });
         } catch (err) {
             if (err.response?.status === 429) {
