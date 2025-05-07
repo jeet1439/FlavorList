@@ -10,14 +10,14 @@ export default function Item() {
   const { id } = useParams();
   const [item, setItem] = useState(null);
   const [error, setError] = useState(null);
- 
+  
 
   const currentUser = useUserStore((state) => state.currentUser);
   
   const [showOrderForm, setShowOrderForm] = useState(false);
   const [quantity, setQuantity] = useState(1);
-  // const [totalPrice, setTotalPrice] = useState(item.price);
-
+  const [totalPrice, setTotalPrice] = useState(0);
+  
   useEffect(() => {
     const fetchItem = async () => {
       try {
@@ -27,6 +27,8 @@ export default function Item() {
         }
         const data = await response.json();
         setItem(data.data);
+        console.log(data.data);
+        setTotalPrice(data.data.price); // Set initial total price
       } catch (error) {
         console.log(error.message);
         setError(error.message);
@@ -38,8 +40,10 @@ export default function Item() {
   
   const handleQuantityChange = (e) => {
     const qty = parseInt(e.target.value);
-    setQuantity(qty);
-    setTotalPrice(qty * item.price);
+    if (!isNaN(qty) && qty > 0) {
+      setQuantity(qty);
+      setTotalPrice(qty * item.price);
+    }
   };
 
   const handleOrderSubmit = (e) => {
@@ -100,20 +104,20 @@ export default function Item() {
             onSubmit={handleOrderSubmit}
             className="bg-slate-950 p-6 rounded-md shadow-md w-full max-w-md"
           >
-            <h3 className="text-xl font-bold mb-4 text-gray-700">Place Order</h3>
+            <h3 className="text-xl font-bold mb-4 text-stone-50">Place Order</h3>
             
-            <label className="block mb-2 text-gray-700 font-medium">Quantity:</label>
+            <label className="block mb-2 text-stone-50 font-medium">Quantity:</label>
             <input
               type="number"
               min="1"
               value={quantity}
               onChange={handleQuantityChange}
-              className="border border-gray-300 px-3 py-2 rounded w-full mb-4"
+              className="border border-gray-500 px-3 py-2 rounded w-full mb-4"
               required
             />
 
-            <p className="text-lg font-medium text-gray-800 mb-4">
-              Total Price: <span className="text-teal-600">₹ 20</span>
+            <p className="text-lg font-medium text-gray-100 mb-4">
+              Total Price: <span className="text-teal-600">₹{totalPrice}</span>
             </p>
 
             <div className="flex justify-end gap-3">
