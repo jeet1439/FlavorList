@@ -4,13 +4,14 @@ import { useProductStore } from "../store/useProductStore.js";
 import { Trash2, UtensilsCrossed } from "lucide-react";
 import  useUserStore  from '../store/userStore.js';
 import { toast } from "react-hot-toast";
-
+import { useNavigate } from "react-router-dom";
 export default function Item() {
+
   const deleteProduct = useProductStore((state) => state.deleteProduct);
   const { id } = useParams();
   const [item, setItem] = useState(null);
   const [error, setError] = useState(null);
-  
+  const navigate = useNavigate();
 
   const currentUser = useUserStore((state) => state.currentUser);
   
@@ -38,6 +39,13 @@ export default function Item() {
     fetchItem();
   }, [id]);
   
+  const handleDelete = async (id) => {
+    await deleteProduct(id);
+    setTimeout(() => {
+      navigate("/menu");
+    }, 1000);
+  };
+
   const handleQuantityChange = (e) => {
     const qty = parseInt(e.target.value);
     if (!isNaN(qty) && qty > 0) {
@@ -71,8 +79,14 @@ export default function Item() {
       toast.success("Order placed successfully!");
       setShowOrderForm(false);
     } catch (err) {
-      console.error(err.message);
-      toast.error("Error placing order");
+      if(currentUser == null){
+        toast.error("You need to login to place the order");
+        navigate('/login');
+      }
+      else{
+        console.error(err.message);
+        toast.error("Error placing order");
+      }
     }
   };
   
@@ -110,7 +124,7 @@ export default function Item() {
 
         {
           currentUser?.is_admin ? ( 
-            <button className="mt-6" onClick={() => deleteProduct(item.id)}><Trash2 size={24} strokeWidth={1.5} className="text-gray-400 hover:text-red-500" />
+            <button className="mt-6" onClick={() => handleDelete(item.id)}><Trash2 size={24} strokeWidth={1.5} className="text-gray-400 hover:text-red-500" />
        </button>
            ) : 
            ('')

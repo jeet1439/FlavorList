@@ -3,7 +3,7 @@ import { getProducts, createProduct, getProduct, updateProduct, deleteProduct } 
 import { verifyToken } from "../middlewares/authMiddleware.js";
 const router = express.Router();
 
-router.get("/", verifyToken, getProducts);
+router.get("/", getProducts);
 router.get("/:id", getProduct);
 router.post("/", createProduct);
 router.put('/:id', updateProduct);

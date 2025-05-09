@@ -8,6 +8,8 @@ const Menu = lazy(() => import('./pages/Menu.jsx'));
 const Item = lazy(() => import('./pages/Item.jsx'));
 const Login = lazy(() => import('./pages/login.jsx'));
 const Signup = lazy(() => import('./pages/Signup.jsx'));
+const Orders = lazy(() => import('./pages/orders.jsx'));
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -19,6 +21,7 @@ export default function App() {
           <Route path='/product/:id' element={<Item />} />
           <Route path='/login' element={<Login/>}/>
           <Route path='/signup' element={<Signup/>}/>
+          <Route path='/orders' element={<Orders/>}/>
         </Routes>
         <Toaster />
       </Suspense>
