@@ -22,4 +22,36 @@ export const createOrder = async (req, res) => {
   }
 };
 
+export const getOrders = async (req, res) => {
+  try {
+    const { userId } = req.params;
+     
+    if (!userId) {
+      return res.status(400).json({ error: 'User ID is required' });
+    }
+
+    const orders = await sql`
+      SELECT 
+        o.id AS order_id,
+        o.user_id,
+        o.product_id,
+        o.quantity,
+        o.total_price,
+        p.name AS product_name,
+        p.image AS product_image,
+        p.price AS product_price
+      FROM orders o
+      JOIN products p ON o.product_id = p.id
+      WHERE o.user_id = ${userId}
+      ORDER BY o.id DESC;
+    `;
+
+    res.status(200).json(orders);
+  } catch (err) {
+    console.error('Error fetching orders:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
 
