@@ -114,13 +114,14 @@ export default function Item() {
         <div className="md:w-1/2 w-full flex flex-col mt-6 md:mt-0">
           <h2 className="text-4xl font-serif font-semibold text-yellow-500 mb-4">{item.name}</h2>
           <p className="text-gray-300 text-lg mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis vel tempora in numquam maiores quae sequi sit doloribus placeat culpa? Reiciendis a, praesentium porro sequi voluptatibus nostrum maxime dolor facerev Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+          <div className="flex flex-row sm:flex-col justify-normal items-baseline sm:gap-1 gap-4 ">
           <p className="text-2xl font-semibold text-yellow-400">
             Price: <span className="text-teal-400">₹{item.price}</span>
           </p>
 
           {/* Order Button */}
         <button className="mt-6 bg-yellow-500 text-white font-semibold text-lg py-2 px-6 rounded-sm flex hover:bg-yellow-600 transition w-36 gap-3" onClick={() => setShowOrderForm(true)}><UtensilsCrossed size={24}/> Order</button>
-
+        </div>
 
         {
           currentUser?.is_admin ? ( 

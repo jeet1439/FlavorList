@@ -25,13 +25,15 @@ export default function orders() {
     }
   };
 
-  fetchOrders();
-}, [currentUser]); 
+    fetchOrders();
+  }, [currentUser]); 
+    
+    const totalOrderPrice = orders.reduce((acc, order) => acc + Number(order.total_price), 0);
 
 
    if(currentUser == null) {
     return (
-        <div className="flex items-center justify-center h-screen ">
+        <div className="flex flex-col items-center justify-center h-screen  bg-slate-950">
         <Link
           to="/menu"
           className="text-yellow-500 hover:underline text-xl flex items-center gap-2"
@@ -39,9 +41,12 @@ export default function orders() {
           <ShoppingCart className="w-5 h-5" />
           Order Now
         </Link>
+        
       </div>
     );
   }
+
+
   return (
     <div className=' min-h-screen w-full bg-slate-950 '>
   <div className="max-w-4xl mx-auto p-4 mt-10 min-h-screen bg-slate-950">
@@ -73,6 +78,12 @@ export default function orders() {
           </div>
         ))}
       <hr className='text-gray-500'/>
+      <div className="flex justify-between items-center px-2 mt-4">
+              <p className="text-lg text-white font-semibold">Grand Total: ₹{totalOrderPrice}</p>
+              <button className="bg-yellow-500 text-black px-4 py-2 rounded-sm hover:bg-yellow-400 transition">
+                Pay now
+              </button>
+      </div>
       </div>
     ) : (
       <p className="text-gray-500 text-center">No orders found.</p>

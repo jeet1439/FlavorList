@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = "http://192.168.87.190:8080";
 
 export const useProductStore = create((set, get) => ({
     products: [],

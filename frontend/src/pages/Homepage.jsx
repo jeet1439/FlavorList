@@ -1,29 +1,33 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
-import backgroundImage from '../assets/background.jpg';
-import  useUserStore  from '../store/userStore.js';
+import ThreeBuilder from "../components/ThreeBuilder";
 
-export default function Homepage() {
-
-  const currentUser = useUserStore((state) => state.currentUser);
-
-
+const Homepage = () => {
   return (
-    <div
-      className="h-screen w-full bg-cover bg-center flex flex-col items-center justify-center text-white"
-      style={{ backgroundImage: `url(${backgroundImage})` }}
-    >
-      <h1 className="text-6xl font-extrabold mb-4 text-white font-serif">Welcome to Our Store</h1>
-      <p className="text-xl text-white mb-6 font-mono">Explore our collection of amazing products</p>
-      <Link to="/menu">
-        <button className="bg-yellow-400 text-stone-50 font-semibold px-6 py-3 rounded-md shadow-md hover:bg-yellow-500">
-          View All Items
-        </button>
-      </Link>
-       <p>welcome, {currentUser?.name}!</p>
-      <p className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-stone-800 text-sm">
-     © {new Date().getFullYear()} FoodieHub. All rights reserved. Made by Jeet banik
-    </p>
+    <div className="relative h-screen w-full bg-slate-950 text-white flex items-center justify-center">
+      {/* Optional Overlay */}
+      <div className="absolute inset-0 bg-black bg-opacity-60 z-0" />
+
+      {/* 3D component */}
+      <div className="absolute inset-0 z-0">
+        <ThreeBuilder />
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 flex flex-col items-center text-center px-4">
+        <h1 className="text-5xl md:text-7xl font-extrabold mb-6 font-serif drop-shadow-lg">
+          Welcome to Our Store
+        </h1>
+        <p className="text-lg md:text-2xl font-mono mb-8 text-gray-200">
+          Explore our collection of amazing products
+        </p>
+        <Link to="/menu">
+          <button className="bg-yellow-400 text-stone-900 font-bold px-8 py-3 rounded-xl shadow-lg transition duration-300 hover:bg-yellow-500 hover:scale-105">
+            View All Items
+          </button>
+        </Link>
+      </div>
     </div>
   );
-}
+};
+
+export default Homepage;
