@@ -1,22 +1,49 @@
-import React, { useRef, useEffect } from 'react';
-import { Canvas, useThree } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
+import React, { useRef, useEffect, useState } from 'react';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { OrbitControls, useGLTF } from '@react-three/drei';
 
-const Box = () => (
-  <mesh>
-    <boxGeometry args={[1, 1, 1]} />
-    <meshStandardMaterial color="orange" />
-  </mesh>
-);
+// const BurgerModel = () => {
+//   const { scene } = useGLTF('/models/eevee.glb'); // adjust path as needed
+//   const ref = useRef();
 
-// Helper to set initial camera position and OrbitControls target
+//   useFrame(() => {
+//     if (ref.current) {
+//       ref.current.rotation.y += 0.005; // Slow rotation
+//     }
+//   });
+
+//   return <primitive ref={ref} object={scene} scale={0.5} />;
+// };
+
+const Box = () => {
+  const meshRef = useRef();
+  const [rotationSpeed] = useState({
+    x: Math.random() * 0.01 + 0.001,
+    y: Math.random() * 0.01 + 0.001,
+  });
+
+  useFrame(() => {
+    if (meshRef.current) {
+      meshRef.current.rotation.x += rotationSpeed.x;
+      meshRef.current.rotation.y += rotationSpeed.y;
+    }
+  });
+
+  return (
+    <mesh ref={meshRef}>
+      <boxGeometry args={[1, 1, 1]} />
+      <meshStandardMaterial color="orange" />
+    </mesh>
+  );
+};
+
 const CameraController = () => {
   const { camera, gl } = useThree();
   const controlsRef = useRef();
 
   useEffect(() => {
-    camera.position.set(2, 2, 2); // Adjust for the desired view angle
-    controlsRef.current.target.set(0, 0, 0); // Look at the center of the box
+    camera.position.set(2, 2, 2);
+    controlsRef.current.target.set(0, 0, 0);
     controlsRef.current.update();
   }, [camera]);
 
@@ -29,7 +56,7 @@ const ThreeBuilder = () => {
       <Canvas dpr={Math.min(window.devicePixelRatio, 2)}>
         <ambientLight intensity={0.5} />
         <directionalLight position={[2, 2, 5]} />
-        <Box />
+        <Box/>
         <CameraController />
       </Canvas>
     </div>
