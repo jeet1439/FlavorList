@@ -4,7 +4,7 @@ import morgan from "morgan";
 import cors from 'cors';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
-
+import { ipFilter, allowedIPs } from "./controllers/ipController.js";
  
 
 dotenv.config();
@@ -24,6 +24,19 @@ app.use(cors({
     credentials: true,               
   }));
 app.use(morgan("dev"));
+
+
+const ADMIN_TOKEN = process.env.ADMIN_TOKEN || 'your-admin-token';
+
+app.post('/admin/allow-ip', (req, res) => {
+  const { ip, token } = req.body;
+
+  if (token !== ADMIN_TOKEN) return res.status(401).json({ message: 'Unauthorized' });
+  if (!ip) return res.status(400).json({ message: 'IP is required' });
+
+  allowedIPs.add(ip);
+  res.json({ message: `✅ IP ${ip} allowed.` });
+});
 
 app.use(async (req, res, next) => {
     try {
