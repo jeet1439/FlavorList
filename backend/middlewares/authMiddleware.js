@@ -14,7 +14,7 @@ export const verifyToken = (req, res, next) => {
       return res.status(403).json({ error: 'Invalid token.' });
     }
 
-    req.user = user; // decoded user payload from token
+    req.user = user; 
     next();
   });
 };

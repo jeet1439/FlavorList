@@ -4,8 +4,7 @@ import morgan from "morgan";
 import cors from 'cors';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
-import { ipFilter, allowedIPs } from "./controllers/ipController.js";
- 
+import path from "path";
 
 dotenv.config();
 
@@ -17,26 +16,16 @@ import { sql } from "./config/db.js";
 import { aj } from "./lib/arcjet.js";
 
 const app = express();
+const __dirname = path.resolve();
+
 app.use(cookieParser());
 app.use(express.json());
 app.use(cors({
-    origin: ['http://localhost:5173', 'http://192.168.0.3:5173'], 
+    origin: 'http://localhost:5173', 
     credentials: true,               
   }));
 app.use(morgan("dev"));
 
-
-const ADMIN_TOKEN = process.env.ADMIN_TOKEN || 'your-admin-token';
-
-app.post('/admin/allow-ip', (req, res) => {
-  const { ip, token } = req.body;
-
-  if (token !== ADMIN_TOKEN) return res.status(401).json({ message: 'Unauthorized' });
-  if (!ip) return res.status(400).json({ message: 'IP is required' });
-
-  allowedIPs.add(ip);
-  res.json({ message: `✅ IP ${ip} allowed.` });
-});
 
 app.use(async (req, res, next) => {
     try {
@@ -73,6 +62,15 @@ app.use('/api/orders', orderRoutes);
 app.get("/test", (req, res) =>{
     res.send("hello from tets rote")
 })
+
+if(process.env.NODE_ENV==="production"){
+    //serve the reat appp
+    app.use(express.static(path.join(__dirname,"/frontend/dist")));
+
+    app.get("*", (req, res) => {
+        res.sendFile(path.resolve(__dirname,"frontend", "dist", "index.html"));
+    })
+}
 
 
 async function initDB() {
